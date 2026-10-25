@@ -1,5 +1,7 @@
+import trainedModel from "./model.json";
 
 import { useState } from "react";
+import SongSearch from "./SongSearch";
 import {
   ResponsiveContainer,
   BarChart,
@@ -29,15 +31,34 @@ const correlations = [
 ];
 
 function predictPopularity(f) {
-  return (
-    40.9 +
-    7.868 * f.danceability -
-    8.366 * f.energy +
-    0.51 * f.loudness -
-    4.64 * f.valence +
-    0.003 * f.tempo -
-    2.019 * f.acousticness
-  );
+  const model = trainedModel;
+  const featureValues = {
+    danceability: Number(f.danceability ?? 0),
+    energy: Number(f.energy ?? 0),
+    loudness: Number(f.loudness ?? 0),
+    valence: Number(f.valence ?? 0),
+    tempo: Number(f.tempo ?? 0),
+    acousticness: Number(f.acousticness ?? 0),
+    speechiness: Number(f.speechiness ?? 0),
+    instrumentalness: Number(f.instrumentalness ?? 0),
+    liveness: Number(f.liveness ?? 0),
+    duration_ms: Number(f.duration_ms ?? 0),
+    explicit: f.explicit === true || f.explicit === 1 || f.explicit === "true" ? 1 : 0,
+    mode: Number(f.mode ?? 0),
+    time_signature: Number(f.time_signature ?? 4),
+    key: Number(f.key ?? 0)
+  };
+  if (model.type === "mean") return Math.round(Math.max(0, Math.min(100, model.mean)));
+  const v = [1, ...model.features.map(name =>
+    (featureValues[name] - model.means[model.features.indexOf(name)]) /
+    model.stds[model.features.indexOf(name)]
+  )];
+  if (model.type === "genre_linear") {
+    const genre = String(f.track_genre ?? "").toLowerCase();
+    v.push(...model.genres.slice(1).map(g => genre === g ? 1 : 0));
+  }
+  const score = model.coefficients.reduce((sum, c, i) => sum + c * v[i], 0);
+  return Math.round(Math.max(0, Math.min(100, score)));
 }
 
 function FeatureSlider({ label, name, value, min, max, step, onChange }) {
@@ -61,6 +82,7 @@ function FeatureSlider({ label, name, value, min, max, step, onChange }) {
 
 export default function App() {
   const [features, setFeatures] = useState(initialFeatures);
+  const [selectedSong, setSelectedSong] = useState(null);
 
   function updateFeature(name, value) {
     setFeatures((current) => ({ ...current, [name]: value }));
@@ -72,6 +94,7 @@ export default function App() {
 
   function resetFeatures() {
     setFeatures({ ...initialFeatures });
+    setSelectedSong(null);
   }
 
   return (
@@ -99,6 +122,16 @@ export default function App() {
         </p>
       </section>
 
+      <SongSearch
+        onSelectSong={(song) => {
+          console.log("Selected song:", song.name, song.features);
+          setSelectedSong(song);
+          setFeatures((current) => ({
+            ...current,
+            ...song.features,
+          }));
+        }}
+      />
       <section className="prediction-layout">
         <div className="panel controls-panel">
           <div className="section-heading">
@@ -189,6 +222,29 @@ export default function App() {
                 ? "A moderate predicted score — there is no guarantee of a hit."
                 : "A lower predicted score — popularity depends on more than audio features."}
           </p>
+          {selectedSong && (
+            <div className="selected-song-comparison">
+              <p className="eyebrow">SELECTED DATASET TRACK</p>
+              <h3>{selectedSong.name}</h3>
+              <p className="selected-song-artist">
+                {selectedSong.artist}
+              </p>
+              <div className="comparison-values">
+                <div>
+                  <span>Recorded popularity</span>
+                  <strong>{selectedSong.popularity}/100</strong>
+                </div>
+                <div>
+                  <span>Model prediction</span>
+                  <strong>{prediction}/100</strong>
+                </div>
+              </div>
+              <p className="comparison-note">
+                Recorded popularity comes from the dataset. The model
+                prediction is an estimate based on the current slider values.
+              </p>
+            </div>
+          )}
           <div className="model-note">
             <strong>Important limitation</strong>
             <p>
