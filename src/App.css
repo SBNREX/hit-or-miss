@@ -759,3 +759,73 @@ button {
     transition-duration: 0.01ms !important;
   }
 }
+
+
+
+/* Song lookup and recorded-versus-predicted comparison */
+.selected-song-comparison {
+  margin-top: 24px;
+  padding: 18px;
+  border: 1px solid rgba(194, 255, 114, 0.2);
+  border-radius: 14px;
+  background: rgba(194, 255, 114, 0.035);
+}
+
+.selected-song-comparison .eyebrow {
+  margin: 0 0 10px;
+  color: #a6c987;
+}
+
+.selected-song-comparison h3 {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 18px;
+}
+
+.selected-song-artist {
+  margin: 6px 0 18px;
+  color: #929b9e;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.comparison-values {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.comparison-values > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.comparison-values span {
+  color: #a7b0b2;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.comparison-values strong {
+  color: #c2ff72;
+  font-size: 21px;
+  font-variant-numeric: tabular-nums;
+}
+
+.comparison-note {
+  margin: 14px 0 0;
+  color: #929b9e;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+@media (max-width: 400px) {
+  .comparison-values {
+    grid-template-columns: 1fr;
+  }
+}

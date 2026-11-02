@@ -1,0 +1,212 @@
+
+.song-search-panel {
+  margin-bottom: 19px;
+  padding: 27px;
+}
+
+.song-search-panel h2 {
+  margin: 0;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 21px;
+}
+
+.song-search-label {
+  display: block;
+  margin: 22px 0 8px;
+  color: #c2cbc4;
+  font-size: 12px;
+}
+
+.song-search-input {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  outline: none;
+  color: #f4f7f3;
+  background: #111719;
+}
+
+.song-search-input:focus {
+  border-color: #c2ff72;
+}
+
+.song-search-results {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.song-result {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 13px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 10px;
+  text-align: left;
+  color: #f4f7f3;
+  background: rgba(255, 255, 255, 0.025);
+  cursor: pointer;
+}
+
+.song-result:hover {
+  border-color: rgba(194, 255, 114, 0.4);
+  background: rgba(194, 255, 114, 0.06);
+}
+
+.song-result strong,
+.song-result small {
+  display: block;
+}
+
+.song-result strong {
+  font-size: 13px;
+}
+
+.song-result small {
+  margin-top: 5px;
+  color: #929b9e;
+  font-size: 11px;
+}
+
+.song-result-arrow {
+  flex-shrink: 0;
+  color: #c2ff72;
+  font-size: 11px;
+}
+
+@media (max-width: 480px) {
+  .song-search-panel {
+    padding: 20px;
+  }
+}
+
+
+/* Ensure song results remain clickable above surrounding panels */
+.song-search-panel {
+  position: relative;
+  z-index: 20;
+}
+
+.song-search-results {
+  position: relative;
+  z-index: 21;
+  pointer-events: auto;
+}
+
+.song-result {
+  position: relative;
+  z-index: 22;
+  pointer-events: auto !important;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.song-result span {
+  pointer-events: none;
+}
+
+.song-search-control {
+  position: relative;
+  z-index: 100;
+}
+
+.song-search-results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  display: grid;
+  gap: 6px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 8px;
+  border: 1px solid rgba(194, 255, 114, 0.2);
+  border-radius: 12px;
+  background: #111719;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.4);
+}
+
+.song-search-panel {
+  position: relative;
+  z-index: 10;
+  overflow: visible !important;
+}
+
+.song-result {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 13px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 10px;
+  text-align: left;
+  color: #f4f7f3;
+  background: #171e20;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.song-result:hover,
+.song-result:focus-visible {
+  border-color: rgba(194, 255, 114, 0.55);
+  background: #202a23;
+  outline: none;
+}
+
+.song-result-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.song-result strong,
+.song-result small {
+  display: block;
+}
+
+.song-result strong {
+  font-size: 13px;
+}
+
+.song-result small {
+  margin-top: 5px;
+  color: #929b9e;
+  font-size: 11px;
+}
+
+.song-result-arrow {
+  flex-shrink: 0;
+  color: #c2ff72;
+  font-size: 11px;
+}
+
+.song-search-hint {
+  color: #929b9e;
+  font-size: 12px;
+}
+
+.song-selection-status {
+  margin-top: 14px;
+  padding: 11px 13px;
+  border: 1px solid rgba(194, 255, 114, 0.18);
+  border-radius: 9px;
+  color: #c2ff72;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.song-selection-artist {
+  color: #929b9e;
+}
+
+@media (max-width: 480px) {
+  .song-search-results {
+    max-height: 260px;
+  }
+}
